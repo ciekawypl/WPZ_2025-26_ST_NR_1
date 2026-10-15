@@ -1,7 +1,15 @@
 # Instalacja
 
-	pip install -r requirements.txt
+Wymagane biblioteki
+
+    pip install -r requirements.txt
+
+Pierwsze wygenerowanie modelu
+
+    python src/wytrenuj.py
 
 # Uruchamianie
 
-	python src/main.py
+Prosty klasyfikator randomowego elementu zbioru testowego
+
+    python src/klasyfikuj.py
