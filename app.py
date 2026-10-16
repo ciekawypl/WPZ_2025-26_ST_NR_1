@@ -18,6 +18,9 @@ div.stButton > button {
 
 st.markdown("<h2 style='text-align: center; margin-bottom: 10px;'>Rozpoznawanie ręcznie pisanych cyfr</h2>", unsafe_allow_html=True)
 
+if 'canvas_key' not in st.session_state:
+    st.session_state.canvas_key = 0
+
 _, center_col, _ = st.columns([2, 5, 2])
 
 with center_col:
@@ -25,6 +28,7 @@ with center_col:
 
     with col1:
         st.markdown("#### 1. Narysuj cyfrę")
+        
         canvas_result = st_canvas(
             fill_color="black",
             stroke_width=30,
@@ -33,15 +37,18 @@ with center_col:
             width=280,
             height=280,
             drawing_mode="freedraw",
-            key="canvas",
+            key=f"canvas_{st.session_state.canvas_key}",
             return_image_data=True,
         )
-        predict_button = st.button("Sprawdź co narysowałem")
+        
+        if st.button("Wyczyść rysunek"):
+            st.session_state.canvas_key += 1
+            st.rerun()
 
     with col2:
         st.markdown("#### 2. Wynik modelu")
         
-        if predict_button and canvas_result.image_data is not None:
+        if canvas_result.image_data is not None and canvas_result.image_data.sum() > 0:
             img_data = canvas_result.image_data.astype("uint8")
             img = Image.fromarray(img_data).convert("L")
             img = img.resize((28, 28), Image.Resampling.LANCZOS)
@@ -77,4 +84,4 @@ with center_col:
             except FileNotFoundError:
                 st.error("Uruchom najpierw plik `model.py`!")
         else:
-            st.info("Narysuj coś i kliknij przycisk.")
+            st.info("Narysuj cyfrę na planszy.")
