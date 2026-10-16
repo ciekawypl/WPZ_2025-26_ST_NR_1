@@ -1,0 +1,6 @@
+numpy
+requests
+streamlit
+streamlit-drawable-canvas
+Pillow
+scipy
